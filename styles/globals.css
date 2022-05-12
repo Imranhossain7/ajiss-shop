@@ -19,7 +19,7 @@ a {
 .main-container {
   max-width: 1400px;
   margin: auto;
-  width: 100%;
+  width: 98%;
 }
 .layout {
   padding: 10px;
@@ -606,6 +606,25 @@ span.text-red {
 }
 .product-max-qty {
   margin-top: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .hero-banner-container {
+    height: 560px;
+  }
+  .hero-banner-image {
+    width: 77%;
+    height: 62%;
+    top: -2%;
+    right: -6%;
+  }
+  .footer-banner-container {
+    height: 560px;
+    margin-top: 80px;
+  }
+  .footer-banner-image {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 800px) {
