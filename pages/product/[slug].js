@@ -1,18 +1,26 @@
 import React, { useState } from "react";
-import { client, urlFor } from "../../lib/client";
 import {
   AiOutlineMinus,
   AiOutlinePlus,
   AiFillStar,
   AiOutlineStar,
 } from "react-icons/ai";
-import { useStateContext } from "../../context/StateContext";
-import { Product } from "../../components";
 
-const ProductDetails = ({ products, product }) => {
+import { client, urlFor } from "../../lib/client";
+import { Product } from "../../components";
+import { useStateContext } from "../../context/StateContext";
+
+const ProductDetails = ({ product, products }) => {
   const { image, name, details, price } = product;
   const [index, setIndex] = useState(0);
-  const { decQty, incQty, qty, onAdd } = useStateContext();
+  const { decQty, incQty, qty, onAdd, setShowCart } = useStateContext();
+
+  const handleBuyNow = () => {
+    onAdd(product, qty);
+
+    setShowCart(true);
+  };
+
   return (
     <div>
       <div className="product-detail-container">
@@ -36,6 +44,7 @@ const ProductDetails = ({ products, product }) => {
             ))}
           </div>
         </div>
+
         <div className="product-detail-desc">
           <h1>{name}</h1>
           <div className="reviews">
@@ -50,7 +59,7 @@ const ProductDetails = ({ products, product }) => {
           </div>
           <h4>Details: </h4>
           <p>{details}</p>
-          <p className="price">BDT {price}</p>
+          <p className="price">${price}</p>
           <div className="quantity">
             <h3>Quantity:</h3>
             <p className="quantity-desc">
@@ -71,12 +80,13 @@ const ProductDetails = ({ products, product }) => {
             >
               Add to Cart
             </button>
-            <button type="button" className="buy-now" onClick="">
+            <button type="button" className="buy-now" onClick={handleBuyNow}>
               Buy Now
             </button>
           </div>
         </div>
       </div>
+
       <div className="maylike-products-wrapper">
         <h2>You may also like</h2>
         <div className="marquee">
@@ -98,7 +108,9 @@ export const getStaticPaths = async () => {
     }
   }
   `;
+
   const products = await client.fetch(query);
+
   const paths = products.map((product) => ({
     params: {
       slug: product.slug.current,
